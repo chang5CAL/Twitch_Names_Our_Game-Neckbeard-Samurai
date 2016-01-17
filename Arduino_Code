@@ -1,0 +1,109 @@
+#include <Servo.h>
+String Input;
+Servo Dragon;
+Servo Snake;
+Servo Cthulu;/*int ledOrange = 10;
+int ledBlue = 13;
+int ledRed = 11;
+int ledGreen = 12;
+*/
+const int snakePin = 8;
+const int dragonPin = 4;
+const int cthuluPin = 7;
+const int movePin = 4;
+int snakeState = 0;
+int dragonState = 0;
+int cthuluState = 0;
+int moveState = 0; 
+bool loops;
+void setup() {
+// put your setup code here, to run once:
+ Serial.begin(9600);
+ Dragon.attach(6); //the servo is attached to D3
+ Snake.attach(3);
+ Cthulu.attach(5);
+ pinMode(snakePin, INPUT);
+ pinMode(dragonPin, INPUT);
+ pinMode(cthuluPin, INPUT);
+ pinMode(movePin, INPUT);
+ pinMode(13, OUTPUT); //Blue
+ pinMode(12, OUTPUT); //Green
+ pinMode(10, OUTPUT); //Orange
+ pinMode(11, OUTPUT); //Red
+}void loop() {
+// put your main code here, to run repeatedly:
+Input = Serial.read(); 
+snakeState = digitalRead(snakePin);
+dragonState = digitalRead(dragonPin);
+cthuluState = digitalRead(cthuluPin);
+moveState = digitalRead(movePin);
+ if (Serial.available() > 0 && loops == false){
+    Serial.println("VOID");
+    Input = Serial.read(); 
+    loops = true;
+  if(Input == "LOOT" && loops == true){
+  digitalWrite(10, HIGH);
+  delay(1000);
+  digitalWrite(10, LOW);
+  delay(1000);
+  loops = false;
+} else if (Input =="EXP" && loops == true){
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);  
+  delay(1000);
+  loops = false;
+} else if (Input == "B1D" && loops == true){
+     Snake.write(0);    
+     delay(3000);
+     Snake.write(100);
+     delay(3000);
+     loops = false;
+}
+  else if (Input == "B2D" && loops == true){
+     Dragon.write(0);    
+     delay(3000);
+     Dragon.write(100);
+     delay(3000);
+     loops = false;
+}
+  else if (Input == "B3D" && loops == true){
+     Cthulu.write(0);    
+     delay(3000);
+     Cthulu.write(100);
+     delay(3000);
+     loops = false;
+} else if (Input == "EVENT" && loops == true){
+  digitalWrite(11, HIGH);
+delay(15000);{
+  loops = false;
+    if(Input == "NOEVENT" && loops == true){
+      digitalWrite(11, LOW);
+      digitalWrite(10, HIGH);
+      loops = false;
+    }     else {
+      digitalWrite(10, HIGH);
+      loops = false;
+    }
+  }
+}
+}
+ else if (moveState == HIGH && loops == true){
+  Input = Serial.read(); 
+  Serial.println("MOVE");
+  delay(100);
+  loops = false;
+} else if (snakeState == HIGH && loops == true) {
+  Serial.println("BOSS1");
+  delay(100);
+  loops = false;
+}   else if (dragonState == HIGH && loops == true){
+  Serial.println("BOSS2");
+  delay(100);
+  loops = false;
+}   else if (cthuluState == HIGH && loops == true){
+  Serial.println("BOSS3");
+  delay(100);
+  loops = false;
+}
+}
